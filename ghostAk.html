@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Valentine</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+margin:0;
+height:100vh;
+background:#fff0f3;
+display:flex;
+justify-content:center;
+align-items:center;
+font-family:Montserrat,sans-serif;
+overflow:hidden;
+}
+
+.card{
+background:white;
+padding:30px;
+border-radius:30px;
+text-align:center;
+width:85%;
+max-width:400px;
+box-shadow:0 15px 35px rgba(255,75,110,.2);
+position:relative;
+z-index:100;
+}
+
+h1{
+font-family:Dancing Script,cursive;
+font-size:38px;
+margin:10px 0;
+z-index:2000;
+position:relative;
+}
+
+#extra{
+font-weight:700;
+font-size:1.1rem;
+min-height:30px;
+margin-bottom:15px;
+color:black;
+position:relative;
+z-index:3000;
+}
+
+.media-box{
+width:100%;
+height:230px;
+border-radius:20px;
+margin-bottom:20px;
+overflow:hidden;
+background:#ffe5ec;
+}
+
+.media-box video{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.buttons{
+display:flex;
+gap:15px;
+justify-content:center;
+z-index:2000;
+position:relative;
+}
+
+#yesBtn{
+background:linear-gradient(135deg,#ff4b6e,#d62828);
+color:white;
+border:none;
+padding:12px 28px;
+border-radius:50px;
+font-size:18px;
+font-weight:bold;
+cursor:pointer;
+}
+
+#noBtn{
+background:white;
+border:2px solid #ff4b6e;
+color:#111;
+padding:12px 28px;
+border-radius:50px;
+font-size:18px;
+cursor:pointer;
+}
+
+/* SECOND PAGE */
+
+#celebration{
+display:none;
+position:fixed;
+inset:0;
+background:linear-gradient(45deg,#ff0a54,#ff7096,#ff4d6d,#c9184a);
+z-index:5000;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+color:white;
+overflow:hidden;
+}
+
+#celebration h1{
+font-size:50px;
+margin-bottom:10px;
+}
+
+/* HEARTS FALLING */
+.heart{
+position:absolute;
+top:-50px;
+pointer-events:none;
+animation:fall linear forwards;
+z-index:9000;
+}
+
+@keyframes fall{
+to{transform:translateY(110vh);}
+}
+</style>
+</head>
+
+<body>
+
+<div class="card" id="main">
+
+<div class="media-box">
+<video src="first.mp4" autoplay muted loop playsinline></video>
+</div>
+
+<h1 id="question">Will you be my Valentine?</h1>
+<div id="extra"></div>
+
+<div class="buttons">
+<button id="yesBtn">Yes 💖</button>
+<button id="noBtn">No</button>
+</div>
+
+</div>
+
+<div id="celebration">
+
+<h1>I Knew You'd Say Yes ❤️</h1>
+
+<div class="media-box" style="width:280px;height:280px;border-radius:50%;border:6px solid rgba(255,255,255,.3)">
+<video src="second.mp4" autoplay muted loop playsinline></video>
+</div>
+
+<p style="font-size:24px;font-weight:700;padding:20px">
+You just made me the happiest person alive 🥹🥹💖  
+I promise to cherish you always.
+</p>
+
+</div>
+
+<script>
+const yesBtn=document.getElementById("yesBtn");
+const noBtn=document.getElementById("noBtn");
+const extra=document.getElementById("extra");
+const main=document.getElementById("main");
+const celebration=document.getElementById("celebration");
+
+let noCount=0;
+let yesScale=1;
+let noShift=0;
+
+const msgs=[
+"Wait… try again 🥺",
+"Are you really sure? 💕",
+"Please don’t break my heart 😭",
+"Come on… just say yes 💖",
+"I’m begging now 🙏❤️",
+"Look how big YES is getting 😍",
+"Okay okay… you win 💝"
+];
+
+noBtn.onclick=()=>{
+noCount++;
+extra.innerText=msgs[Math.min(noCount-1,msgs.length-1)];
+
+yesScale+=0.4;
+yesBtn.style.transform=`scale(${yesScale})`;
+
+noShift+=45;
+noBtn.style.transform=`translateX(${noShift}px)`;
+
+if(noCount>=7){
+noBtn.style.display="none";
+}
+};
+
+yesBtn.onclick=()=>{
+main.style.display="none";
+celebration.style.display="flex";
+setInterval(makeHeart,100);
+};
+
+function makeHeart(){
+const hearts=['❤️','💖','💝','💕','💗','💓','✨'];
+const colors=['#fff','#ffb3c1','#ff4d6d','#ff85a1','#feca57','#ff9ff3'];
+
+const h=document.createElement("div");
+h.className="heart";
+h.innerHTML=hearts[Math.floor(Math.random()*hearts.length)];
+h.style.left=Math.random()*100+"vw";
+h.style.color=colors[Math.floor(Math.random()*colors.length)];
+h.style.fontSize=(Math.random()*30+15)+"px";
+
+const d=Math.random()*3+2;
+h.style.animationDuration=d+"s";
+
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),d*1000);
+}
+</script>
+
+</body>
+</html>
